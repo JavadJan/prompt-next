@@ -2,12 +2,18 @@ import User from "@models/User";
 import { ConnectedToDB } from "@utils/database";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
+
 
 const handler = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_ID,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET
         })
     ],
     callbacks: {
@@ -29,10 +35,11 @@ const handler = NextAuth({
                 const userExist = await User.findOne({ email: profile.email })
                 //2. if not, create a new user
                 if (!userExist) {
+                    console.log("profile", profile)
                     await User.create({
                         email: profile.email,
                         username: profile.name.replace(" ", "").toLowerCase(),
-                        image: profile.picture
+                        image: typeof (profile.picture) == String ? profile.picture : profile.picture.data.url
                     })
                 }
                 return true

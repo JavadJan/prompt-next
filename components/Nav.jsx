@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
 
-const Nav = ({setOpenModal}) => {
+const Nav = ({ setOpenModal }) => {
   //data to rename session
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null)
@@ -14,11 +14,9 @@ const Nav = ({setOpenModal}) => {
     const setProvider = async () => {
       const response = await getProviders();
       setProviders(response)
-      console.log(response)
     }
     setProvider()
   }, [])
-  console.log(session)
   return (
 
     <nav className='flex-between w-full mb-16 pt-3'>
@@ -46,19 +44,16 @@ const Nav = ({setOpenModal}) => {
           :
           <>
 
-            {
-              providers && Object.values(providers).map((provider) => (
-                <button type='button'
-                  key={provider.name}
-                  onClick={() => setOpenModal(true)}
-                  className='black_btn'>
-                  Sign In
-                </button>
-                // <Link className='black_btn' href='/login'>
-                // Sign In
-                // </Link>
 
-              ))}
+            <button type='button'
+              onClick={() => {
+                console.log(providers)
+                setOpenModal(true)
+              }}
+              className='black_btn'>
+              Sign In
+            </button>
+
           </>
         }
       </div>
@@ -97,15 +92,14 @@ const Nav = ({setOpenModal}) => {
           </div>
           ) : (
             <>
-              {
-                providers && Object.values(providers).map((provider) => (
-                  <button type='button'
-                    key={provider.name}
-                    onClick={() => signIn(provider.id)}
-                    className='black_btn'>
-                    Sing In
-                  </button>
-                ))}
+              <button type='button'
+                onClick={() => {
+                  console.log(providers)
+                  setOpenModal(true)
+                }}
+                className='black_btn'>
+                Sign In
+              </button>
             </>
           )
 
